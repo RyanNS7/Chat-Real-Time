@@ -1,4 +1,5 @@
 import { User } from "../../../domain/entities/user/user";
+import { verificationStatus } from "../../../domain/entities/verificationStatus";
 import { userRepository } from "../../../domain/usecases/user/userRepository";
 
 
@@ -10,17 +11,24 @@ export class CreateUser {
         this.userProps = userProps
     }
 
-    async create(user: User){
+    async create(user: User): Promise<verificationStatus>{
         if(await this.userProps.exits(user.id)){
-            return new Error("User already exist")
+            return {
+                error: "User already exist",
+                status: false
+            }
         }
 
-        if(await this.userProps.create(user)){
-            return true
+        const userCreated = await User.create(user)
+
+        if(!userCreated.status){
+            return {
+                error: userCreated.error,
+                status: userCreated.status
+            }
         }
 
-        return false
-
+        return userCreated
     }
 
 }
