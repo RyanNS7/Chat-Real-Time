@@ -1,6 +1,6 @@
 
 export interface verificationStatus{
     error?: string
-    data?: {}
+    data?: any
     status: boolean
 }
