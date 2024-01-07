@@ -12,7 +12,7 @@ export class SendMessageUseCase implements sendMessages{
         this.userRepository = userRepository
     }
 
-    async send(userMessage: messages): Promise<verificationStatus | messages>{
+    async send(userMessage: messages): Promise<verificationStatus>{
 
         if((await this.userRepository.exits(userMessage.id_User)).status === false){
             return {
@@ -36,9 +36,11 @@ export class SendMessageUseCase implements sendMessages{
         }
 
         return {
-            message: userMessage.message,
-            id_User: userMessage.id_User,
-            sending_time: userMessage.sending_time,
+            data: {
+                message: userMessage.message,
+                id_User: userMessage.id_User,
+                sending_time: userMessage.sending_time            
+            },
             status: true
         }
     }
