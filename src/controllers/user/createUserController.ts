@@ -20,21 +20,25 @@ export class createUserControllers {
             }
 
             if(!httpRequest.body.email){
-                return badRequest("Body Not Found", false)
+                return badRequest("Email Not Found", false)
             }
 
             if(!httpRequest.body.name){
-                return badRequest("Body Not Found", false)
+                return badRequest("Name Not Found", false)
             }
 
             if(!httpRequest.body.password){
-                return badRequest("Body Not Found", false)
+                return badRequest("Password Not Found", false)
             }
         } catch (error) {
             return serverError("Server Error", false)
         }
 
         const user = await User.create(httpRequest.body.name, httpRequest.body.email, httpRequest.body.password)
+
+        if(user.error){
+            return badRequest(user.error, user.status)
+        }
 
         const userCreated = await new CreateUserUseCase(this.userProps).create(user.data)
 
