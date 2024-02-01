@@ -1,6 +1,14 @@
-import { messages } from "../../../../domain/entities/chat/messages";
-import { verificationStatus } from "../../../../domain/entities/verificationStatus";
+import { verificationStatus } from "../../../../../domain/entities/verificationStatus";
 
-export interface inMemoryChatRepository{
-    sendMessage(message: messages): Promise<verificationStatus>
+export interface infoMessage{
+    message: string,
+    id_User: string
+}
+
+export interface inMemoryChatSendMessage{
+    sendMessage(infoMessage: infoMessage, otherUserId: string): Promise<verificationStatus>
+}
+
+export interface inMemoryChatUserConversations{
+    findChat(userId: string, otherUserId: string): Promise<verificationStatus>
 }
