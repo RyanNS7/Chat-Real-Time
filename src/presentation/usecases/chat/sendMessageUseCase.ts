@@ -8,7 +8,7 @@ export class SendMessageUseCase implements sendMessages{
 
     userRepository: userRepository
 
-    constructor(propsMessages: sendMessages, userRepository: userRepository){
+    constructor(userRepository: userRepository){
         this.userRepository = userRepository
     }
 
