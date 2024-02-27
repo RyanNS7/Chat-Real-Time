@@ -1,18 +1,21 @@
 import { verificationStatus } from "../../../../domain/entities/verificationStatus"
 import { systemUsers } from "./db-in-memory"
 
-export async function findUserInMemory(id: string): Promise<verificationStatus>{
+export class findUserInMemory{
 
-    const existUser = await systemUsers.find((user) => {
-        id === user.id
-    })
+    static async find(id: string): Promise<verificationStatus>{
 
-    if(existUser === undefined){
+        const existUser = systemUsers.find( user => user.id === id ) 
+    
+        if(existUser == undefined){
+            return {
+                status: false
+            }
+        }
+    
         return {
-            status: false
+            data: existUser,
+            status: true
         }
     }
-
-    return {status: true}
-
 }
