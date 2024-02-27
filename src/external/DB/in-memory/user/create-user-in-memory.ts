@@ -1,30 +1,45 @@
 import { createUserControllers } from "../../../../controllers/user/createUserController";
 import { verificationStatus } from "../../../../domain/entities/verificationStatus";
-import { findUserInMemory } from "./find-user-in-memory";
 import { systemUsers } from "./db-in-memory";
+import { userRepository } from "../../../../domain/usecases/user/userRepository";
 
-export async function createUserInMemory(name: string, email: string, password: string): Promise<verificationStatus>{
+interface infoUser {
+    name: string,
+    email: string,
+    password: string
+}
 
-    const request = {body: {
-        name,
-        email,
-        password 
-    }}
+export class createUserInMemory{
 
-    const user = await new createUserControllers({exits: findUserInMemory}).create(request)
+    userProps: userRepository
 
-    if(!user.body.status){
-        return { 
-            error: user.body.error,
-            status: user.body.status
+    constructor(userProps: userRepository){
+        this.userProps = userProps
+    }
+
+    async create(infoUser: infoUser): Promise<verificationStatus>{
+
+        const request = {body: {
+            name: infoUser.name,
+            email: infoUser.email,
+            password: infoUser.password 
+        }}
+    
+        const user = await new createUserControllers(this.userProps).create(request)
+    
+        if(!user.body.status){
+            return { 
+                error: user.body.error,
+                status: user.body.status
+            }
         }
+    
+        systemUsers.push(user.body.data)
+    
+        return {
+            data: user,
+            status: true
+        }
+
     }
-
-    systemUsers.push(user.body.data)
-
-    return {
-        data: user,
-        status: true
-    }
-
 }
