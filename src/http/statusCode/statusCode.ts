@@ -1,43 +1,61 @@
 import { httpResponse } from "../http";
 
-export const ok = (data: any): httpResponse => {
+export const ok = (data: any, status: boolean): httpResponse => {
     return {
         statusCode: 200,
-        body: data
+        body: {
+            data,
+            status
+        }
     }
 }
 
-export const created = (data: any): httpResponse => {
+export const created = (data: any, status: boolean): httpResponse => {
     return {
         statusCode: 201,
-        body: data
+        body: {
+            data,
+            status
+        }
     }
 }
 
-export const badRequest = (error: Error): httpResponse => {
+export const badRequest = (error: string, status: boolean): httpResponse => {
     return {
         statusCode: 400,
-        body: error.message
+        body: {
+            error,
+            status
+        }
     }
 }
 
-export const unauthorized = (error: Error): httpResponse => {
+export const unauthorized = (error: string, status: boolean): httpResponse => {
     return {
         statusCode: 401,
-        body: error.message
+        body: {
+            error,
+            status
+        }
     }
 }
 
-export const notFound = (error: Error): httpResponse => {
+export const notFound = (error: string, status: boolean): httpResponse => {
     return {
         statusCode: 404,
-        body: error.message
+        body: {
+            error,
+            status
+        }
     }
 }
 
-export const serverError = (nameError: string): httpResponse => {
+export const serverError = (error: string, status: boolean): httpResponse => {
     return {
         statusCode: 500,
-        body: new Error(nameError)
+        body: {
+            error,
+            status
+        }
     }
 }
