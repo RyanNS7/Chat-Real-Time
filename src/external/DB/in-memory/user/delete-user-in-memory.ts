@@ -14,6 +14,13 @@ export class deleteUserInMemory{
         }
     
         const index = systemUsers.indexOf((await findUserInMemory.find(id)).data);
+
+        if(index === -1){
+            return {
+                status: false,
+                error: "User not found"
+            }
+        }
     
         if (index !== -1) {
             systemUsers.splice(index, 1);
