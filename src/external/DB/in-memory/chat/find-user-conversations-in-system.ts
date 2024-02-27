@@ -7,10 +7,11 @@ export class findUserConversationsInSystem implements inMemoryChatUserConversati
 
     async findChat(id: string, otherUserId: string): Promise<verificationStatus>{
 
-        const existChat = userConversationsInSystem.find( chat => chat.id_first_user === id && chat.id_second_user === otherUserId ) 
+        const existChat = await userConversationsInSystem.find( chat => chat.id_first_user === id && chat.id_second_user === otherUserId ) 
     
         if(existChat == undefined){
             return {
+                error: "Chat not found",
                 status: false
             }
         }
