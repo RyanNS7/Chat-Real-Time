@@ -7,7 +7,7 @@ import { findUserConversationsInSystem } from "./find-user-conversations-in-syst
 import { inMemoryChatSendMessage, infoMessage } from "./repository/in-memory-chat-repo";
 import { userConversationsInSystem } from "./user-conversations-in-memory";
 
-class SendMessageInMemoryChat implements inMemoryChatSendMessage {
+export class SendMessageInMemoryChat implements inMemoryChatSendMessage {
 
     userRepository: userRepository
 
@@ -19,11 +19,27 @@ class SendMessageInMemoryChat implements inMemoryChatSendMessage {
 
         const userSendingMessage = await this.userRepository.exits(infoMessage.id_User)
         const userReceivingTheMessage = await this.userRepository.exits(otherUserId)
-        const chat = await new findUserConversationsInSystem().findChat(userSendingMessage.data.id, userReceivingTheMessage.data.id)
+
+        if(userSendingMessage.status === false){
+            return {
+                error: "The user sending the message does not exist",
+                status: false
+            }
+        }
+
+        if(userReceivingTheMessage.status === false){
+            return {
+                error: "The user receiving the message does not exist",
+                status: false
+            }
+        }
+
+        const chat = await new findUserConversationsInSystem().findChat(infoMessage.id_User, otherUserId)
+
         const infoChat: chat = {
             messages: [],
-            id_first_user: userSendingMessage.data.id,
-            id_second_user: userReceivingTheMessage.data.id
+            id_first_user: infoMessage.id_User,
+            id_second_user: otherUserId
 
         }
 
@@ -31,11 +47,13 @@ class SendMessageInMemoryChat implements inMemoryChatSendMessage {
 
         if(chat.status === false){
             const createdChat = await new createChatUseCase(this.userRepository).create(infoChat)
-            
-            userConversationsInSystem.push(createdChat.data.messages.push(sending.body))
+
+            await createdChat.data.messages.push(sending.body)
+
+            userConversationsInSystem.push(createdChat.data)
 
             return {
-                data: userConversationsInSystem,
+                data: userConversationsInSystem.find(chat => chat === createdChat.data),
                 status: true
             }
         }
@@ -44,7 +62,7 @@ class SendMessageInMemoryChat implements inMemoryChatSendMessage {
             userConversationsInSystem.push(chat.data.messages.push(sending.body))
 
             return {
-                data: userConversationsInSystem,
+                data: userConversationsInSystem.find(chatSystem => chatSystem === chat.data),
                 status: true
             }
         }
