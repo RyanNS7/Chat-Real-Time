@@ -17,7 +17,6 @@ describe("Create User Use Case", () => {
         const user = userTest("Ryan", "user_Test@test.com", "Teste12345")
 
         const sut = await new CreateUserUseCase(userRepositoryMock).create(user.data)
-        console.log(sut.data)
 
         expect(sut).toMatchObject({status: true})
     })
