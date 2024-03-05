@@ -1,7 +1,6 @@
 import { createUserInMemory } from "../../../../../external/DB/in-memory/user/create-user-in-memory"
 import { userRepository } from "../../../../../domain/usecases/user/userRepository"
 import { deleteUserInMemory } from "../../../../../external/DB/in-memory/user/delete-user-in-memory"
-import { systemUsers } from "../../../../../external/DB/in-memory/user/db-in-memory"
 
 async function creatingUser(name: string, email:string, password: string){
 
@@ -29,6 +28,6 @@ describe("Delete user in in-memory database", () => {
         const sut = await deleteUserInMemory.delete(user as any)
 
         expect(sut).toMatchObject({status: false})
-        expect(sut).toMatchObject({error: "User not find"})
+        expect(sut).toMatchObject({error: "User not found"})
     })
 })
