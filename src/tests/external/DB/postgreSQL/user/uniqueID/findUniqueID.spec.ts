@@ -17,16 +17,16 @@ const configDB: config = {
 
 describe("find unique id", () => {
 
-    it("", async() => {
+    it("should be error because the value passed is not an ID", async() => {
         
         const sut = await new findUniqueID(configDB).find("id_created_specifically_for_this_test")
 
-        expect(sut.statusCode).toBe(400)
+        expect(sut).toMatchObject({statusCode: 400})
         expect(sut.body).toMatchObject({error: 'The passed value is not an ID'})
 
     })
 
-    it("", async() => {
+    it("should be the unique ID must be found successfully", async() => {
         
         const request = {
             body: {
@@ -40,7 +40,7 @@ describe("find unique id", () => {
 
         const sut = await new findUniqueID(configDB).find(userDB.body.data.user.id_user)
 
-        expect(sut.statusCode).toBe(200)
+        expect(sut).toMatchObject({statusCode: 200})
         expect(sut.body.data.rows[0].id_unique).toBeDefined()
         expect(sut.body.data.rowCount).toBe(1)
 
