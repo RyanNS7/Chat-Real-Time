@@ -27,8 +27,6 @@ export class findChat {
             return badRequest( secondUser.body.error , false)
         }
 
-        console.log(firstUser.body.data.rows[0].id_user)
-
         const query = {
             text: `SELECT * FROM "chat" WHERE id_user = $1 AND id_another_user = $2`,
             values: [ firstUser.body.data.rows[0].id_user, secondUser.body.data.rows[0].id_user] 
@@ -36,10 +34,21 @@ export class findChat {
 
         const find_chat = await client.query(query)
 
-        console.log(find_chat)
-
         if(find_chat.rowCount === 0){
-            return badRequest('Error when trying to find the chat', false)
+
+            const query = {
+                text: `SELECT * FROM "chat" WHERE id_user = $1 AND id_another_user = $2`,
+                values: [ secondUser.body.data.rows[0].id_user, firstUser.body.data.rows[0].id_user] 
+            }
+    
+            const find_chat = await client.query(query)
+
+            if(find_chat.rowCount === 0){
+                return badRequest('Error when trying to find the chat', false)
+            }
+
+            return ok(find_chat, true)
+
         }
 
         return ok(find_chat, true)
