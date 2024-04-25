@@ -22,7 +22,7 @@ export class findUser {
 
         const find_user = await client.query(`SELECT * FROM "user" WHERE id_user = '${id_user}'`)
 
-        if(find_user.rows.length === 0){
+        if(find_user.rowCount === 0){
             return badRequest('User not found', false)
         }
 
