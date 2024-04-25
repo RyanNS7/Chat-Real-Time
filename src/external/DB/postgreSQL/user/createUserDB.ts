@@ -38,6 +38,12 @@ export class createUserDB {
             values: [ uuidv4() ,body.data.email, body.data.name, encryptedPassword] 
         }
 
+        const find_user = await new findUser(this.config).find(query.values[0])
+
+        if(find_user.statusCode !== 400){
+            return badRequest("User already exist", false)
+        }
+
         const userDB = await client.query(query)
 
         if(userDB.rowCount === 0){
