@@ -2,7 +2,6 @@ import { httpResponse } from "../../../../../http/http";
 import { badRequest, ok } from "../../../../../http/statusCode/statusCode";
 import { ClientDB } from "../../config/clientDB";
 import { config } from "../../config/configDB";
-import { findUser } from "../findUser";
 
 export class findWithUniqueID{
 
