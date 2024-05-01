@@ -19,7 +19,7 @@ export class CreateUserUseCase {
             }
         }
 
-        if(await this.userProps.exits(user.id)){
+        if( (await this.userProps.exits(user.email)).status === true){
             return {
                 error: "User already exist",
                 status: false
