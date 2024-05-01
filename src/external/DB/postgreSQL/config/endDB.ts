@@ -1,15 +1,17 @@
-import { Pool } from "pg";
+// import { Pool } from "pg";
 import { config } from "./configDB";
 import { PoolDB } from "./poolDB";
 
 export class EndDB {
-    config: config
+    private config: config
 
     constructor(config: config){
         this.config = config
     }
 
-    async endConnection(pool: Pool){
+    async endConnection(){
+
+        const pool = await PoolDB.connectPool(this.config)
 
         return pool.end()
     }

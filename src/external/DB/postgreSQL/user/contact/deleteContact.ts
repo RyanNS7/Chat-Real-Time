@@ -2,12 +2,13 @@ import { httpResponse } from "../../../../../http/http"
 import { badRequest, ok } from "../../../../../http/statusCode/statusCode"
 import { ClientDB } from "../../config/clientDB"
 import { config } from "../../config/configDB"
+import { EndDB } from "../../config/endDB"
 import { findContact } from "./findContact"
 
 
 export class deleteContact{
 
-    config: config
+    private config: config
 
     constructor(config: config){
         this.config = config
@@ -29,6 +30,8 @@ export class deleteContact{
         }
 
         const delete_contact = await client.query(query)
+
+        await new EndDB(this.config).endConnection()
 
         return ok(delete_contact, true)
 

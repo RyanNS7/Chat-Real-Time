@@ -2,11 +2,12 @@ import { httpResponse } from "../../../../../http/http";
 import { badRequest, ok } from "../../../../../http/statusCode/statusCode";
 import { ClientDB } from "../../config/clientDB";
 import { config } from "../../config/configDB";
+import { EndDB } from "../../config/endDB";
 import { findUser } from "../findUser";
 
 export class findUniqueID{
 
-    config: config
+    private config: config
 
     constructor(config: config){
         this.config = config
@@ -28,6 +29,8 @@ export class findUniqueID{
         }
         
         const find_user_unique_ID = await client.query(query)
+
+        await new EndDB(this.config).endConnection()
 
         return ok(find_user_unique_ID, true)
 

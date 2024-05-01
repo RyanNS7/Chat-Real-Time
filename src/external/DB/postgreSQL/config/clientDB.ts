@@ -4,7 +4,7 @@ import { config } from "./configDB";
 
 export class ClientDB {
 
-    config: config
+    private config: config
 
     constructor(config: config){
         this.config = config

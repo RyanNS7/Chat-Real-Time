@@ -15,7 +15,7 @@ type informationsMessage = {
 }
 
 export class sendMessageInDB {
-    config: config
+    private config: config
     userProps: userRepository
 
     constructor(config: config, userProps: userRepository){

@@ -2,12 +2,12 @@ import { httpResponse } from "../../../../http/http"
 import { badRequest, ok } from "../../../../http/statusCode/statusCode"
 import { ClientDB } from "../config/clientDB"
 import { config } from "../config/configDB"
-import { validate } from 'uuid'
 import { findWithUniqueID } from "./uniqueID/findWithUniqueID"
+import { EndDB } from "../config/endDB"
 
 export class deleteUser {
 
-    config: config
+    private config: config
 
     constructor(config: config){
         this.config = config
@@ -29,6 +29,8 @@ export class deleteUser {
         if(delete_user.rowCount === 0){
             return badRequest('User not found', false)
         }
+
+        await new EndDB(this.config).endConnection()
 
         return ok({user: delete_user, unique_id: delete_unique_id}, true)
 

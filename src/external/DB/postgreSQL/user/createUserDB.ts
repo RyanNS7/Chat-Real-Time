@@ -11,11 +11,12 @@ import { findUser } from "./findUser";
 import { createUniqueID } from "./uniqueID/createUniqueID";
 import { v4 as uuidv4 } from 'uuid'
 import { findUniqueID } from "./uniqueID/findUniqueID";
+import { EndDB } from "../config/endDB";
 
 export class createUserDB {
 
     userProps: userRepository
-    config: config
+    private config: config
 
     constructor(userProps: userRepository, config: config){
         this.userProps = userProps
@@ -63,6 +64,8 @@ export class createUserDB {
                 name: body.data.name
             }, 
             process.env.JWT_SECRET)
+
+            await new EndDB(this.config).endConnection()
 
         return created({
             user: {id_user: query.values[0], email: body.data.email, name: body.data.name},

@@ -2,11 +2,12 @@ import { httpResponse } from "../../../../../http/http";
 import { badRequest, ok } from "../../../../../http/statusCode/statusCode";
 import { ClientDB } from "../../config/clientDB";
 import { config } from "../../config/configDB";
+import { EndDB } from "../../config/endDB";
 import { findWithUniqueID } from "../uniqueID/findWithUniqueID";
 
 export class findContact {
 
-    config: config
+    private config: config
 
     constructor(config: config){
         this.config = config
@@ -38,6 +39,8 @@ export class findContact {
         if(findContact.rowCount === 0){
             return badRequest("Error when trying to find the user's contact", false)
         }
+
+        await new EndDB(this.config).endConnection()
 
         return ok(findContact, true)
         

@@ -2,13 +2,14 @@ import { httpResponse } from "../../../../../http/http";
 import { badRequest, created } from "../../../../../http/statusCode/statusCode";
 import { ClientDB } from "../../config/clientDB";
 import { config } from "../../config/configDB";
+import { EndDB } from "../../config/endDB";
 import { findWithUniqueID } from "../uniqueID/findWithUniqueID";
 import {v4 as uuidv4} from 'uuid'
 
 
 export class addingContact {
 
-    config: config
+    private config: config
 
     constructor(config: config){
         this.config = config
@@ -39,6 +40,8 @@ export class addingContact {
         if(contact.rowCount === 0){
             return badRequest("Error adding contact", false)
         }
+
+        await new EndDB(this.config).endConnection()
 
         return created(contact, true)
 

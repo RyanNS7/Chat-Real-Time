@@ -6,7 +6,7 @@ import { findWithUniqueID } from "../user/uniqueID/findWithUniqueID"
 
 
 export class findChat {
-    config: config
+    private config: config
 
     constructor(config: config){
         this.config = config

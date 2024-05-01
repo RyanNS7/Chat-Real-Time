@@ -3,12 +3,13 @@ import { badRequest, created} from "../../../../../http/statusCode/statusCode";
 import { Unique_ID } from "../../../../cryptography/unique_id";
 import { ClientDB } from "../../config/clientDB";
 import { config } from "../../config/configDB";
+import { EndDB } from "../../config/endDB";
 import { findUser } from "../findUser";
 import { findUniqueID } from "./findUniqueID";
 
 export class createUniqueID {
 
-    config: config
+    private config: config
 
     constructor(config: config){
         this.config = config
@@ -43,6 +44,8 @@ export class createUniqueID {
         if(uniqueID.rowCount === 0){
             return badRequest("error when creating unique id", false)
         }
+
+        await new EndDB(this.config).endConnection()
 
         return created(uniqueID, true)
     }

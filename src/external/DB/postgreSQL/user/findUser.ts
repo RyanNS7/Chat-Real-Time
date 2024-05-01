@@ -3,10 +3,11 @@ import { badRequest, ok } from "../../../../http/statusCode/statusCode"
 import { ClientDB } from "../config/clientDB"
 import { config } from "../config/configDB"
 import { validate } from 'uuid'
+import { EndDB } from "../config/endDB"
 
 export class findUser {
 
-    config: config
+    private config: config
 
     constructor(config: config){
         this.config = config
@@ -25,6 +26,8 @@ export class findUser {
         if(find_user.rowCount === 0){
             return badRequest('User not found', false)
         }
+
+        await new EndDB(this.config).endConnection()
 
         return ok(find_user, true)
 

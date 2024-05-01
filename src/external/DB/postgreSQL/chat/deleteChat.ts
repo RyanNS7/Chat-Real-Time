@@ -6,7 +6,7 @@ import { findWithUniqueID } from "../user/uniqueID/findWithUniqueID"
 import { findChat } from "./findChat"
 
 export class deleteChat {
-    config: config
+    private config: config
 
     constructor(config: config){
         this.config = config
