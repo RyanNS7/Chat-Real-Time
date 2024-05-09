@@ -6,7 +6,7 @@
 import type {Config} from 'jest';
 
 const config: Config = {
-      testEnvironment: "node",
+      // testEnvironment: "node",
       testPathIgnorePatterns: ['/node_modules/'],
       collectCoverage: true,
       collectCoverageFrom: ['src/**/*.ts(x)', 'src/**/*spec.ts(x)'],
